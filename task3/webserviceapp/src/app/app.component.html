@@ -1,0 +1,133 @@
+<html>
+<head></head>
+<body>
+<div>
+  <div class="list-group-item">
+    <div class="box">
+      <label for="course-code">Kurskod</label>
+      </div>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+
+      <input type="text" class="form-control" id="course-code" [(ngModel)]="kurskod" name="course-code">
+      <!--<input class="form-control" type="course-code" id="course-code" [(ngModel)]= "kurskod">-->
+      <div class="box_button">
+
+          <button class="search-button" mat-flat-button color="accent" click="getKursByKurskod()" >sök</button>
+
+          <button  class="search-button" mat-flat-button color="accent" click="getPnrByStudentId()"
+                   >get pnr</button>
+
+
+
+
+
+      </div>
+      </div>
+    </form>
+
+
+  </div>
+
+  <div class="list-group-item">
+    <div class="box">
+      <label for="task-in-canvas">Uppgift i Canvas</label>
+    </div>
+    <div class="box">
+      <input class="form-control" type="course-code" id="task-in-canvas">
+    </div>
+  </div>
+
+  <!---->
+  <div class="list-group-item">
+  <div class="box">
+      <label for="modul-in-ladok">Modul i Ladok</label>
+    </div>
+    <div class="box">
+    <input class="form-control" type="course-code" id="modul-in-ladok">
+    </div>
+
+  </div>
+  <div class="list-group-item-button">
+    <div class="box">
+    <label for="course-code">Markera</label>
+    </div>
+  <div class="box_button">
+  <button mat-icon-button color="accent" >
+    <button class="search-button" mat-flat-button color="accent" >Alla</button>
+  </button>
+  </div>
+    <div class="box_button">
+      <button mat-icon-button color="accent" >
+        <button class="search-button" mat-flat-button color="accent">Betygsatta</button>
+      </button>
+  </div>
+  <div class="box_button">
+        <button mat-icon-button color="accent" >
+          <button class="search-button" mat-flat-button color="accent">Inga</button>
+        </button>
+    </div>
+    </div>
+    <div class="list-group-item-button">
+
+        <label for="course-code">Datum för markerade</label>
+
+    <input matInput [matDatepicker]="picker">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+          <button class="search-button" mat-flat-button color="accent">Sätt datum</button>
+    </div>
+      <div class="myBorder">
+
+
+
+        <input  class="form-control" type="text" >
+          <button class="search-button" mat-flat-button color="accent">Överför</button>
+
+
+    </div>
+
+<table class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg color_DeepSkyBlue">
+
+  <tr >
+    <th scope="col">Namn</th>
+    <th scope="col">Omdöme i Canvas </th>
+    <th scope="col">Betyg i Ladok</th>
+    <th scope="col">Examinationsdata</th>
+    <th scope="col">Status</th>
+    <th scope="col">Information</th>
+
+  </tr>
+  <tr
+    *ngFor="let canvasdata of canvasdatan; let i = index"
+
+    [class.active]="i == currentIndex"
+    (click)="setActiveCanvasdata(canvasdata,i)"
+
+    (click)="onSubmit()"
+
+
+
+  >
+<!--nu måste jag koppla ihop 2 klasser Canvasdata och StudentItl för att ta fram PNR. Eventuellt query in angular eller bind eller något sånt-->
+
+    <th scope="row" > {{canvasdata.studentID}}</th>
+    <td> {{canvasdata.studentnamn}}</td>
+    <td> {{canvasdata.epostadress}}</td>
+    <td> {{canvasdata.kursnamn}}</td>
+    <td> {{canvasdata.kurskod}}</td>
+    <td  *ngFor="let student of studentsIts; let j=index"
+        (click)="setActiveStudentIts(student,j)" click="findPnrByStudentId()">{{student.personnummer}}</td>
+  </tr>
+
+</table>
+</div>
+
+
+<!--<div class="myBorder">
+<p>RADER MED OKLARHET </p>
+</div>-->
+
+</body>
+</html>
