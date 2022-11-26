@@ -2,15 +2,28 @@ package webservice.irina.task3.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 public class Ladokdata implements Serializable {
     @Id
-    @Column(name="id", nullable=false)
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Column(name="stud_namn")
     private String studentnamn;
     private Long antagningsar;
+    @Column(name="pnr")
     private String personnummer;
     private String kursnummer;
     private Long kursar;
@@ -18,11 +31,52 @@ public class Ladokdata implements Serializable {
     private byte[] intyg;
     private boolean campus;
 
+    public String getKursmodul() {
+        return kursmodul;
+    }
+
+    public void setKursmodul(String kursmodul) {
+        this.kursmodul = kursmodul;
+    }
+
+    private String kursmodul;
+
+    public String getInformation() {
+        return information;
+    }
+
+    public void setInformation(String information) {
+        this.information = information;
+    }
+
+    private String information;
+
+    public Date getRegistrDatum() {
+        return registrDatum;
+    }
+
+    public void setRegistrDatum(Date registrDatum) {
+        this.registrDatum = registrDatum;
+    }
+
+    private Date registrDatum;
+
+    public Canvasdata getCanvasdata() {
+        return canvasdata;
+    }
+
+    public void setCanvasdata(Canvasdata canvasdata) {
+        this.canvasdata = canvasdata;
+    }
+
+    @OneToOne (mappedBy = "ladokdata")
+    private Canvasdata canvasdata;
+
     public Ladokdata() {
     }
 
     public Ladokdata(Long id, String studentnamn, Long antagningsar, String personnummer, String kursnummer,
-                     Long kursar, String resultat, byte[] intyg, boolean campus) {
+                     Long kursar, String resultat, byte[] intyg, boolean campus, Date registrDatum, String information, String kursmodul) {
         super();
         this.id = id;
         this.studentnamn = studentnamn;
@@ -33,6 +87,9 @@ public class Ladokdata implements Serializable {
         this.resultat=resultat;
         this.intyg=intyg;
         this.campus=campus;
+        this.registrDatum=registrDatum;
+        this.information=information;
+        this.kursmodul=kursmodul;
 
     }
 
@@ -46,13 +103,6 @@ public class Ladokdata implements Serializable {
 
     private String status;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getStudentnamn() {
         return studentnamn;

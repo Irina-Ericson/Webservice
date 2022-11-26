@@ -47,9 +47,9 @@ public class EpokController {
         return ResponseEntity.ok(k);
     }
 
-    @GetMapping("myKurs/{kurskod}")
-    public List findKursByKurskod(@PathVariable ("kurskod") String kurskod) {
-        List k = kursRepo.findKursByKurskod(kurskod);
+    @GetMapping("myKurs/{kurs}")
+    public List findKursByKurs(@PathVariable ("kurs") String kurs) {
+        List k = kursRepo.findKursByKurs(kurs);
 
         return k;
     }
@@ -61,9 +61,8 @@ public class EpokController {
 
         if (kursOptional.isPresent()) {
             Epok _k = kursOptional.get();
-            _k.setKurskod(k.getKurskod());
-            _k.setModulKod(k.getModulKod());
-            _k.setModulBenamning(k.getModulBenamning());
+            _k.setKurs(k.getKurs());
+            _k.setModul(k.getModul());
             return new ResponseEntity<>(kursRepo.save(_k), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

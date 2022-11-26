@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import webservice.irina.task3.dto.CanvasdataResponse;
 import webservice.irina.task3.model.CanvasProjection;
+import webservice.irina.task3.model.CanvasResultProjection;
 import webservice.irina.task3.model.Canvasdata;
 
 import java.util.List;
@@ -33,6 +34,10 @@ public interface CanvasRepo extends JpaRepository<Canvasdata, Long> {
   //  @Query(value="Select * from canvasdata", nativeQuery = true)
     @Query(value="select c.*, s.* from canvasdata c, studentits s where c.studentid LIKE s.student_id", nativeQuery = true)
     List <CanvasProjection> findAllData();
+
+    @Query(value="select c.*, l.*, s.* from canvasdata c, ladokdata l, studentits s where c.studentid LIKE s.student_id AND s.personnummer LIKE l.pnr", nativeQuery = true)
+    List <CanvasResultProjection> findAllResultData();
+
 
 
     List <Canvasdata> findStudentByStudentID(String studentID);

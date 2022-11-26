@@ -43,12 +43,25 @@ public class Canvasdata implements Serializable {
 
     @Column(name = "uppgift")
     private String inlamningsuppgift;
-    private String betyg;
+    @Column(name="omdome")
+    private String omdome;
     private String kommentar;
 
     @OneToOne
-   @JoinColumn(name="stud_id", referencedColumnName = "id")
+   @JoinColumn(name="stud_id")
     private StudentIts studentIts;
+
+    @OneToOne
+    @JoinColumn(name="stud_r_id")
+    private Ladokdata ladokdata;
+
+    public Ladokdata getLadokdata() {
+        return ladokdata;
+    }
+
+    public void setLadokdata(Ladokdata ladokdata) {
+        this.ladokdata = ladokdata;
+    }
 
     public StudentIts getStudentIts() {
         return studentIts;
@@ -63,7 +76,7 @@ public class Canvasdata implements Serializable {
 
     public Canvasdata(Long id, String studentID, String studentnamn, String epostadress, String kursnamn,
                       String kurskod, String termin, int lasperiod, byte[] dokument, String lank,
-                      String inlamningsuppgift, String betyg, String kommentar, StudentIts studentIts){
+                      String inlamningsuppgift, String omdome, String kommentar, StudentIts studentIts){
         this.id=id;
         this.studentID=studentID;
         this.studentnamn=studentnamn;
@@ -75,7 +88,7 @@ public class Canvasdata implements Serializable {
         this.dokument=dokument;
         this.lank=lank;
         this.inlamningsuppgift=inlamningsuppgift;
-        this.betyg=betyg;
+        this.omdome=omdome;
         this.kommentar=kommentar;
         this.studentIts=studentIts;
 
@@ -166,17 +179,18 @@ public class Canvasdata implements Serializable {
         return inlamningsuppgift;
     }
 
+    public String getOmdome() {
+        return omdome;
+    }
+
+    public void setOmdome(String omdome) {
+        this.omdome = omdome;
+    }
+
     public void setInlamningsuppgift(String inlamningsuppgift) {
         this.inlamningsuppgift = inlamningsuppgift;
     }
 
-    public String getBetyg() {
-        return betyg;
-    }
-
-    public void setBetyg(String betyg) {
-        this.betyg = betyg;
-    }
 
     public String getKommentar() {
         return kommentar;

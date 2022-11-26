@@ -23,7 +23,7 @@ public class EpokService {
         this.epokRepo = epokRepo;
     }
 
-    public List<Epok> getKursnummer(Long id) {
+    public List<Epok> getKurs(Long id) {
         return epokRepo.getKursById(id);
     }
 

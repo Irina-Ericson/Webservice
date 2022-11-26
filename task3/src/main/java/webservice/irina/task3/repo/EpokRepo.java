@@ -22,7 +22,7 @@ public interface EpokRepo extends JpaRepository<Epok, Long> {
 
     List<Epok> getKursById(Long id);
 
-    List<Epok> findKursByKurskod(String kurskod);
+    List<Epok> findKursByKurs(String kurs);
 
     void deleteKursById(@NotNull Long id);
 }

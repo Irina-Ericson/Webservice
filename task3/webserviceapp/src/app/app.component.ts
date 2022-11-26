@@ -38,8 +38,8 @@ inputfile="";
 kurs ={
   id: "",
   kurskod: "",
-  modulKod: "",
-  modulBenamning: ""
+  modul: "",
+
 };
 canvasdata={
   id:"",
@@ -140,6 +140,7 @@ onSubmit() {
 
 
     this.findCanvasdataByKurskod();
+    this.getKursByKurskod();
  //   this.findPnrByStudentId();
 
 

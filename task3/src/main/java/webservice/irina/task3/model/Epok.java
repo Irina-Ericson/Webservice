@@ -14,47 +14,41 @@ public class Epok implements Serializable {
     public Long getId() {
         return id;
     }
-    private String kurskod;
-    private String modulKod;
-    private String modulBenamning;
+    private String kurs;
+
+    private String modul;
+
 
     public Epok(){}
 
-    public Epok(Long id, String kurskod, String modulKod, String modulBenamning){
+    public Epok(Long id, String kurs, String modul){
 
         this.id=id;
-        this.kurskod=kurskod;
-        this.modulKod=modulKod;
-        this.modulBenamning=modulBenamning;
+        this.kurs=kurs;
+        this.modul=modul;
+
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getKurskod() {
-        return kurskod;
+    public String getKurs() {
+        return kurs;
     }
 
-    public void setKurskod(String kurskod) {
-        this.kurskod = kurskod;
+    public void setKurs(String kurs) {
+        this.kurs = kurs;
     }
 
-    public String getModulKod() {
-        return modulKod;
+    public String getModul() {
+        return modul;
     }
 
-    public void setModulKod(String modulKod) {
-        this.modulKod = modulKod;
+    public void setModul(String modul) {
+        this.modul = modul;
     }
 
-    public String getModulBenamning() {
-        return modulBenamning;
-    }
-
-    public void setModulBenamning(String modulBenamning) {
-        this.modulBenamning = modulBenamning;
-    }
 
 
 }

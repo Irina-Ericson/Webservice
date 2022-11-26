@@ -9,9 +9,11 @@
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
 
-      <input type="text" class="form-control" id="course-code" [(ngModel)]="kurskod" name="course-code">
-      <!--<input class="form-control" type="course-code" id="course-code" [(ngModel)]= "kurskod">-->
-      <div class="box_button">
+     <input type="text" class="form-control" id="course-code" [(ngModel)]="kurskod" name="course-code" >
+    <!--  <input class="form-control" type="course-code" id="course-code" [(ngModel)]= "kurskod">-->
+      <div class="box_button"  >
+
+
 
           <button class="search-button" mat-flat-button color="accent" click="getKursByKurskod()" >sök</button>
 
@@ -29,12 +31,21 @@
 
   </div>
 
-  <div class="list-group-item">
-    <div class="box">
+  <div class="list-group-item" >
+
+    <div  class="box" >
       <label for="task-in-canvas">Uppgift i Canvas</label>
     </div>
-    <div class="box">
-      <input class="form-control" type="course-code" id="task-in-canvas">
+    <div id="task-in-canvas" >
+      <table>
+      <tr
+        *ngFor ="let kurs of kurser"
+        click="getKursByKurskod()">
+        <td>{{this.kurs.modul}}</td>
+         </tr>
+      </table>
+
+     <!--<input class="form-control" type="course-code" id="task-in-canvas">-->
     </div>
   </div>
 

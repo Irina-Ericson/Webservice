@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import webservice.irina.task3.exception.ResourceNotFoundException;
 import webservice.irina.task3.model.CanvasProjection;
+import webservice.irina.task3.model.CanvasResultProjection;
 import webservice.irina.task3.model.Canvasdata;
 import webservice.irina.task3.repo.CanvasRepo;
 import webservice.irina.task3.service.CanvasService;
@@ -38,6 +39,10 @@ public class CanvasController {
         return canvasService.findAllData();
     }
 
+    @GetMapping("/canvasdataResult")
+    List<CanvasResultProjection> getAllResultCanvasdataById(){
+        return canvasService.findAllResultData();
+    }
 
     @PostMapping("/canvasdata")
     public Canvasdata createCanvasdata(@RequestBody Canvasdata cd) {
@@ -90,7 +95,7 @@ public class CanvasController {
             _cd.setDokument(cd.getDokument());
             _cd.setLank(cd.getLank());
             _cd.setInlamningsuppgift(cd.getInlamningsuppgift());
-            _cd.setBetyg(cd.getBetyg());
+            _cd.setOmdome(cd.getOmdome());
             _cd.setKommentar(cd.getKommentar());
             return new ResponseEntity<>(canvasRepo.save(_cd), HttpStatus.OK);
         } else {
