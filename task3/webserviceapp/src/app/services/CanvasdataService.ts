@@ -1,4 +1,5 @@
 import {Canvasdata} from 'src/assets/models/Canvasdata';
+import {CanvasdataResult} from 'src/assets/models/CanvasdataResult';
 import {Injectable} from '@angular/core';
 import { HttpClient,HttpClientModule , HttpRequest, HttpEvent} from '@angular/common/http';
 
@@ -26,12 +27,17 @@ constructor (private http: HttpClient){}
     return this.http.get<Canvasdata[]>(`${this.apiServerUrl}/canvasdata/canvasdata`); /**OK, getAll**/
 }
 
- get(id:any): Observable<Canvasdata> {
-    return this.http.get<Canvasdata>(`${this.apiServerUrl}/canvasdata/canvasdata/${id}`);           /**OK**/
-  }
+ get(c_id:any): Observable<Canvasdata> {
+    return this.http.get<Canvasdata>(`${this.apiServerUrl}/canvasdata/canvasdata/${c_id}`);           /**OK**/
+}
+
 
 public getCanvasdataByKurskod(kurskod:string): Observable<any>{
   return this.http.get(`${this.apiServerUrl}/canvasdata/myCanvasdata_2/${kurskod}`);
+}
+
+public getCanvasdataResult(kursnamn:any): Observable<any>{
+  return this.http.get(`${this.apiServerUrl}/canvasdata/canvasdataResult/${kursnamn}`);
 }
 
 list(): Observable<any> {
@@ -41,11 +47,11 @@ list(): Observable<any> {
     return this.http.post(this.apiServerUrl, data);
   }
 
-  update(id: any, data: any): Observable<any> {
-      return this.http.put(`${this.apiServerUrl}///${id}`, data);
+  update(c_id: any, data: any): Observable<any> {
+      return this.http.put(`${this.apiServerUrl}///${c_id}`, data);
     }
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${this.apiServerUrl}///${id}`);
+  delete(c_id: any): Observable<any> {
+    return this.http.delete(`${this.apiServerUrl}///${c_id}`);
   }
 
   public deleteAll(): Observable<any> {
@@ -63,8 +69,8 @@ list(): Observable<any> {
        return this.http.get(`${this.apiServerUrl}/kurs`);
      }
 
-       getData(id: number): Observable<Object> {
-         return this.http.get(`${this.apiServerUrl}/picture/${id}`);
+       getData(c_id: number): Observable<Object> {
+         return this.http.get(`${this.apiServerUrl}/canvasdata/${c_id}`);
        }
 
 

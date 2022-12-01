@@ -39,6 +39,10 @@ public class CanvasService {
         return canvasRepo.findAllResultData();
     }
 
+    public List<CanvasResultProjection> findAllResultDataByKursnamn(String kursnamn){
+
+        return canvasRepo.findAllResultDataByKursnamn(kursnamn);
+    }
 
 
 

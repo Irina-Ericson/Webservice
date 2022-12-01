@@ -1,6 +1,6 @@
 export interface Canvasdata{
 
-    id:number;
+    c_id:number;
     studentID:string | null;
     studentnamn:string | null;
     epostadress:string | null;

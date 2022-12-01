@@ -23,22 +23,25 @@ import java.util.Optional;
 public interface CanvasRepo extends JpaRepository<Canvasdata, Long> {
 
     @NotNull
-    Optional<Canvasdata> findCanvasdataById(Long id);
+   //Optional<Canvasdata> findCanvasdataById(Long id);
 
-    List<Canvasdata> getCanvasdataById(Long id);
+  //  List<Canvasdata> getCanvasdataById(Long id);
 
 
 
-    void deleteCanvasdataById(@NotNull Long id);
+   // void deleteCanvasdataById(@NotNull Long id);
 
   //  @Query(value="Select * from canvasdata", nativeQuery = true)
     @Query(value="select c.*, s.* from canvasdata c, studentits s where c.studentid LIKE s.student_id", nativeQuery = true)
     List <CanvasProjection> findAllData();
 
-    @Query(value="select c.*, l.*, s.* from canvasdata c, ladokdata l, studentits s where c.studentid LIKE s.student_id AND s.personnummer LIKE l.pnr", nativeQuery = true)
+    @Query(value="select * from canvasdata c inner join studentits s on c.studentid=s.student_id inner join ladokdata l on s.personnummer=l.pnr group by uppgift", nativeQuery = true)
     List <CanvasResultProjection> findAllResultData();
 
 
+    @Query(value="select * from canvasdata c inner join studentits s on c.studentid=s.student_id inner join ladokdata l on s.personnummer=l.pnr group by uppgift", nativeQuery = true)
+
+    List <CanvasResultProjection> findAllResultDataByKursnamn(String kursnamn);
 
     List <Canvasdata> findStudentByStudentID(String studentID);
 

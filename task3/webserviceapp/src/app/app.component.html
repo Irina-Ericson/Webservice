@@ -6,7 +6,7 @@
     <div class="box">
       <label for="course-code">Kurskod</label>
       </div>
-    <form (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()" class="searchform">
       <div class="form-group">
 
      <input type="text" class="form-control" id="course-code" [(ngModel)]="kurskod" name="course-code" >
@@ -16,41 +16,32 @@
 
 
           <button class="search-button" mat-flat-button color="accent" click="getKursByKurskod()" >sök</button>
-
-          <button  class="search-button" mat-flat-button color="accent" click="getPnrByStudentId()"
-                   >get pnr</button>
-
-
-
-
-
       </div>
       </div>
     </form>
-
-
   </div>
 
   <div class="list-group-item" >
 
-    <div  class="box" >
-      <label for="task-in-canvas">Uppgift i Canvas</label>
-    </div>
-    <div id="task-in-canvas" >
-      <table>
-      <tr
-        *ngFor ="let kurs of kurser"
-        click="getKursByKurskod()">
-        <td>{{this.kurs.modul}}</td>
-         </tr>
-      </table>
 
-     <!--<input class="form-control" type="course-code" id="task-in-canvas">-->
-    </div>
+      <label >Uppgift i Canvas</label>
+      <ul class="list-group">
+
+      <li
+        class="list-group-item"
+        *ngFor ="let canvasdataResult of canvasdataResults, let i=index"
+          [class.active]="i == currentIndex"
+
+          click="setCurrentCanvasdataResult(canvasdataResult, i)"
+      >
+
+        <td>{{this.canvasdataResult.uppgift}}</td>
+         </li>
+</ul>
+
   </div>
+  <div class="list-group-item" >
 
-  <!---->
-  <div class="list-group-item">
   <div class="box">
       <label for="modul-in-ladok">Modul i Ladok</label>
     </div>
@@ -99,6 +90,7 @@
 
     </div>
 
+<div>
 <table class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg color_DeepSkyBlue">
 
   <tr >
@@ -110,31 +102,24 @@
     <th scope="col">Information</th>
 
   </tr>
-  <tr
-    *ngFor="let canvasdata of canvasdatan; let i = index"
-
-    [class.active]="i == currentIndex"
-    (click)="setActiveCanvasdata(canvasdata,i)"
-
-    (click)="onSubmit()"
+  <tr     *ngIf="currentCanvasdataResult">
 
 
-
-  >
 <!--nu måste jag koppla ihop 2 klasser Canvasdata och StudentItl för att ta fram PNR. Eventuellt query in angular eller bind eller något sånt-->
 
-    <th scope="row" > {{canvasdata.studentID}}</th>
-    <td> {{canvasdata.studentnamn}}</td>
-    <td> {{canvasdata.epostadress}}</td>
-    <td> {{canvasdata.kursnamn}}</td>
-    <td> {{canvasdata.kurskod}}</td>
-    <td  *ngFor="let student of studentsIts; let j=index"
-        (click)="setActiveStudentIts(student,j)" click="findPnrByStudentId()">{{student.personnummer}}</td>
+    <td> {{this.currentCanvasdataResult.studentnamn}}</td>
+
+    <td> {{this.currentCanvasdataResult.omdome}}</td>
+    <td> {{this.currentCanvasdataResult.resultat}}</td>
+    <td> {{this.currentCanvasdataResult.registrDatum}}</td>
+    <td> {{this.currentCanvasdataResult.status}}</td>
+    <td  >{{this.currentCanvasdataResult.information}}</td>
+
   </tr>
 
 </table>
 </div>
-
+</div>
 
 <!--<div class="myBorder">
 <p>RADER MED OKLARHET </p>

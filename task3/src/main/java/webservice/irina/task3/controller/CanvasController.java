@@ -49,14 +49,19 @@ public class CanvasController {
         return canvasRepo.save(cd);
     }
 
-    @GetMapping("/canvasdata/{id}")
-    public ResponseEntity<Canvasdata> getCanvasdataById(@PathVariable Long id) {
-        Canvasdata cd = canvasRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Canvasdata finns inte med id :" + id));
+    @GetMapping("/canvasdata/{c_id}")
+    public ResponseEntity<Canvasdata> getCanvasdataById(@PathVariable Long c_id) {
+        Canvasdata cd = canvasRepo.findById(c_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Canvasdata finns inte med id :" + c_id));
         return ResponseEntity.ok(cd);
     }
 
-   /** @GetMapping("/myCanvasdata_1/{studentID}")
+    @GetMapping("/canvasdataResult/{kursnamn}")
+    List<CanvasResultProjection> findAllResultDataByKursnamn (@PathVariable String kursnamn) {
+        return canvasService.findAllResultDataByKursnamn(kursnamn);
+    }
+
+    /** @GetMapping("/myCanvasdata_1/{studentID}")
     public List <Canvasdata> getStudentByStudentID (@PathVariable String studentID) {
 
         List student = canvasRepo.findStudentByStudentID(studentID);
@@ -78,10 +83,10 @@ public class CanvasController {
 
 
 
-    @PutMapping(value="/saveCanvasdata")
+  /**  @PutMapping(value="/saveCanvasdata")
     @ResponseBody
-    ResponseEntity<Canvasdata> saveCanvasdata(@PathVariable("id") Long id, @RequestBody Canvasdata cd) {
-        Optional<Canvasdata> canvasdatadataOptional = canvasRepo.findCanvasdataById(id);
+    ResponseEntity<Canvasdata> saveCanvasdata(@PathVariable("c_id") Long c_id, @RequestBody Canvasdata cd) {
+        Optional<Canvasdata> canvasdatadataOptional = canvasRepo.findCanvasdataById(c_id);
 
         if (canvasdatadataOptional.isPresent()) {
             Canvasdata _cd = canvasdatadataOptional.get();
@@ -94,14 +99,14 @@ public class CanvasController {
             _cd.setLasperiod(cd.getLasperiod());
             _cd.setDokument(cd.getDokument());
             _cd.setLank(cd.getLank());
-            _cd.setInlamningsuppgift(cd.getInlamningsuppgift());
+            _cd.setUppgift(cd.getUppgift());
             _cd.setOmdome(cd.getOmdome());
             _cd.setKommentar(cd.getKommentar());
             return new ResponseEntity<>(canvasRepo.save(_cd), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
+    }**/
 
 
 

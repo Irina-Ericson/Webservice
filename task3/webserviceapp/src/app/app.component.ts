@@ -10,6 +10,7 @@ import {CanvasdataService} from 'src/app/services/CanvasdataService';
 import {StudentItsService} from 'src/app/services/StudentItsService';
 import {Kurs} from 'src/assets/models/Kurs';
 import {Canvasdata} from 'src/assets/models/Canvasdata';
+import {CanvasdataResult} from 'src/assets/models/CanvasdataResult';
 import {StudentIts} from 'src/assets/models/StudentIts';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -23,32 +24,53 @@ import { FormsModule } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'webserviceapp';
 
-columndefs : any[] = ['name','code', 'point', 'date', 'status', 'information'];
+
 
 message="Hej"
 
-dataSource: any = new MatTableDataSource<Kurs>();
-kurser: Kurs[] = [];
-canvasdatan:Canvasdata[]=[];
-studentsIts:StudentIts[]=[];
+
+kurser!: Kurs[];
+canvasdatan!:Canvasdata[];
+studentsIts!:StudentIts[];
+canvasdataResults!:CanvasdataResult[];
 currentKurs!:Kurs;
 currentCanvasdata!:Canvasdata;
 currentStudentIts!:StudentIts;
+currentCanvasdataResult!:CanvasdataResult;
+currentIndex=-1;
 inputfile="";
+kursnamn="";
+
 kurs ={
   id: "",
   kurskod: "",
   modul: "",
 
 };
+
 canvasdata={
-  id:"",
+  c_id:"",
   studentID:"",
   studentnamn:"",
   epostadress:"",
   kursnamn:"",
   kurskod:""
   };
+
+ canvasdataResult={
+    c_id:"",
+    status:"",
+    omdome:"",
+    studentnamn:"",
+    personnummer:"",
+    resultat:"",
+    ladokdata:"",
+    information:"",
+    registrDatum:Date,
+    kursnamn:"",
+    uppgift:""
+
+ };
 
   studentIts={
 
@@ -58,14 +80,14 @@ canvasdata={
   studentId:"",
   losenord:"",
   epostadress:""
-    }
+    };
 
 
   isTableLoaded: boolean = false;
   showAll: boolean = false;
   kurskod="";
   studentID="";
-  currentIndex=-1;
+
 
 
 
@@ -92,10 +114,10 @@ constructor(private kursService: KursService,
   }
 
   getKursByKurskod(){
-        this.kursService.findKursByKurskod(this.kurskod)
+        this.canvasdataService.getCanvasdataResult(this.kursnamn)
           .subscribe(
-            kurser=>
-            this.kurser = kurser);
+            canvasdataResults=>
+            this.canvasdataResults = canvasdataResults);
             console.log("ok");
 
       }
@@ -136,17 +158,32 @@ constructor(private kursService: KursService,
           this.currentIndex=index;
         }
 
-onSubmit() {
+  /**  setCurrentCanvasdataResult(canvasdataResult: CanvasdataResult, index: number): void {
+      if (this.currentCanvasdataResult && this.currentCanvasdataResult.c_id == canvasdataResult.c_id) {
+      //this.currentCanvasdataResult = undefined;
+      this.currentIndex = -1;
 
+    } else {
+      this.currentCanvasdataResult = canvasdataResult;
+      this.currentIndex = index;
+    }
+  }**/
 
-    this.findCanvasdataByKurskod();
+  setCurrentCanvasdataResult(canvasdataResult: CanvasdataResult, index: number):void{
+            this.currentCanvasdataResult=canvasdataResult;
+            this.currentIndex=index;
+          }
+
+  onSubmit() {
+
+  //  this.findCanvasdataByKurskod();
     this.getKursByKurskod();
  //   this.findPnrByStudentId();
 
 
   }
-  }
 
+}
 
 
 

@@ -24,7 +24,7 @@ public class Canvasdata implements Serializable {
     @Column(name="c_id", nullable=false)
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private Long id;
+    private Long c_id;
 
    @Column(name = "studentid", insertable = false, updatable = false)
 
@@ -42,7 +42,7 @@ public class Canvasdata implements Serializable {
     private String lank;
 
     @Column(name = "uppgift")
-    private String inlamningsuppgift;
+    private String uppgift;
     @Column(name="omdome")
     private String omdome;
     private String kommentar;
@@ -74,10 +74,10 @@ public class Canvasdata implements Serializable {
 
 
 
-    public Canvasdata(Long id, String studentID, String studentnamn, String epostadress, String kursnamn,
+    public Canvasdata(Long c_id, String studentID, String studentnamn, String epostadress, String kursnamn,
                       String kurskod, String termin, int lasperiod, byte[] dokument, String lank,
-                      String inlamningsuppgift, String omdome, String kommentar, StudentIts studentIts){
-        this.id=id;
+                      String uppgift, String omdome, String kommentar, StudentIts studentIts){
+        this.c_id=c_id;
         this.studentID=studentID;
         this.studentnamn=studentnamn;
         this.epostadress=epostadress;
@@ -87,7 +87,7 @@ public class Canvasdata implements Serializable {
         this.lasperiod=lasperiod;
         this.dokument=dokument;
         this.lank=lank;
-        this.inlamningsuppgift=inlamningsuppgift;
+        this.uppgift=uppgift;
         this.omdome=omdome;
         this.kommentar=kommentar;
         this.studentIts=studentIts;
@@ -95,12 +95,12 @@ public class Canvasdata implements Serializable {
 
     }
 
-    public Long getId() {
-        return id;
+    public Long getC_id() {
+        return c_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setC_id(Long c_id) {
+        this.c_id = c_id;
     }
 
     public String getStudentID() {
@@ -175,8 +175,8 @@ public class Canvasdata implements Serializable {
         this.lank = lank;
     }
 
-    public String getInlamningsuppgift() {
-        return inlamningsuppgift;
+    public String getUppgift() {
+        return uppgift;
     }
 
     public String getOmdome() {
@@ -187,8 +187,8 @@ public class Canvasdata implements Serializable {
         this.omdome = omdome;
     }
 
-    public void setInlamningsuppgift(String inlamningsuppgift) {
-        this.inlamningsuppgift = inlamningsuppgift;
+    public void setUppgift(String uppgift) {
+        this.uppgift = uppgift;
     }
 
 
