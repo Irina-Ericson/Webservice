@@ -29,4 +29,6 @@ public interface CanvasResultProjection {
     String getPersonnummer();
 
 
-}
+
+
+    }

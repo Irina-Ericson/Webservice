@@ -5,125 +5,117 @@
   <div class="list-group-item">
     <div class="box">
       <label for="course-code">Kurskod</label>
-      </div>
+    </div>
     <form (ngSubmit)="onSubmit()" class="searchform">
       <div class="form-group">
 
-     <input type="text" class="form-control" id="course-code" [(ngModel)]="kurskod" name="course-code" >
-    <!--  <input class="form-control" type="course-code" id="course-code" [(ngModel)]= "kurskod">-->
-      <div class="box_button"  >
-
-
-
+        <input type="text" class="form-control" id="course-code" [(ngModel)]="kursnamn" name="course-code" >
+        <!--  <input class="form-control" type="course-code" id="course-code" [(ngModel)]= "kurskod">-->
+        <div class="box_button"  >
           <button class="search-button" mat-flat-button color="accent" click="getKursByKurskod()" >sök</button>
-      </div>
+        </div>
       </div>
     </form>
   </div>
 
   <div class="list-group-item" >
+    <label >Uppgift i Canvas</label>
 
 
-      <label >Uppgift i Canvas</label>
-      <ul class="list-group">
+    <div class="form-group">
 
+      <!--<input type="text" class="form-control" id="course-code1" [(ngModel)]="uppgift" name="course-code" >-->
+      <!-- <input class="form-control" type="course-code1" id="course-code1" [(ngModel)]= "uppgift">-->
+
+
+    </div>
+
+    <ol class="list-group">
       <li
         class="list-group-item"
-        *ngFor ="let canvasdataResult of canvasdataResults, let i=index"
-          [class.active]="i == currentIndex"
-
-          click="setCurrentCanvasdataResult(canvasdataResult, i)"
+        *ngFor ="let canvasdataResult of canvasdataResults"
+        [class.selected]="canvasdataResult === currentCanvasdataResult"
+        (click)="onSelect(canvasdataResult)"
       >
-
         <td>{{this.canvasdataResult.uppgift}}</td>
-         </li>
-</ul>
+      </li>
+    </ol>
 
   </div>
   <div class="list-group-item" >
-
-  <div class="box">
+    <div class="box">
       <label for="modul-in-ladok">Modul i Ladok</label>
     </div>
     <div class="box">
-    <input class="form-control" type="course-code" id="modul-in-ladok">
+      <input class="form-control" type="course-code" id="modul-in-ladok">
     </div>
-
   </div>
   <div class="list-group-item-button">
     <div class="box">
-    <label for="course-code">Markera</label>
+      <label for="course-code">Markera</label>
     </div>
-  <div class="box_button">
-  <button mat-icon-button color="accent" >
-    <button class="search-button" mat-flat-button color="accent" >Alla</button>
-  </button>
-  </div>
+    <div class="box_button">
+      <button mat-icon-button color="accent" >
+        <button class="search-button" mat-flat-button color="accent" >Alla</button>
+      </button>
+    </div>
     <div class="box_button">
       <button mat-icon-button color="accent" >
         <button class="search-button" mat-flat-button color="accent">Betygsatta</button>
       </button>
+    </div>
+    <div class="box_button">
+      <button mat-icon-button color="accent" >
+        <button class="search-button" mat-flat-button color="accent">Inga</button>
+      </button>
+    </div>
   </div>
-  <div class="box_button">
-        <button mat-icon-button color="accent" >
-          <button class="search-button" mat-flat-button color="accent">Inga</button>
-        </button>
-    </div>
-    </div>
-    <div class="list-group-item-button">
+  <div class="list-group-item-button">
 
-        <label for="course-code">Datum för markerade</label>
+    <label for="course-code">Datum för markerade</label>
 
     <input matInput [matDatepicker]="picker">
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-          <button class="search-button" mat-flat-button color="accent">Sätt datum</button>
-    </div>
-      <div class="myBorder">
+    <button class="search-button" mat-flat-button color="accent">Sätt datum</button>
+  </div>
+  <div class="myBorder">
 
 
 
-        <input  class="form-control" type="text" >
-          <button class="search-button" mat-flat-button color="accent">Överför</button>
+    <input  class="form-control" type="text" >
+    <button class="search-button" mat-flat-button color="accent">Överför</button>
 
 
-    </div>
-
-<div>
-<table class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg color_DeepSkyBlue">
-
-  <tr >
-    <th scope="col">Namn</th>
-    <th scope="col">Omdöme i Canvas </th>
-    <th scope="col">Betyg i Ladok</th>
-    <th scope="col">Examinationsdata</th>
-    <th scope="col">Status</th>
-    <th scope="col">Information</th>
-
-  </tr>
-  <tr     *ngIf="currentCanvasdataResult">
+  </div>
 
 
-<!--nu måste jag koppla ihop 2 klasser Canvasdata och StudentItl för att ta fram PNR. Eventuellt query in angular eller bind eller något sånt-->
-
-    <td> {{this.currentCanvasdataResult.studentnamn}}</td>
-
-    <td> {{this.currentCanvasdataResult.omdome}}</td>
-    <td> {{this.currentCanvasdataResult.resultat}}</td>
-    <td> {{this.currentCanvasdataResult.registrDatum}}</td>
-    <td> {{this.currentCanvasdataResult.status}}</td>
-    <td  >{{this.currentCanvasdataResult.information}}</td>
-
-  </tr>
-
-</table>
 </div>
+<div *ngIf ="currentCanvasdataResult">
+  <table class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg color_DeepSkyBlue">
+
+    <tr >
+      <th scope="col">Namn</th>
+      <th scope="col">Omdöme i Canvas </th>
+      <th scope="col">Betyg i Ladok</th>
+      <th scope="col">Examinationsdata</th>
+      <th scope="col">Status</th>
+      <th scope="col">Information</th>
+
+    </tr>
+    <tr >
+      <!--<td> <input [(ngModel)]="this.currentCanvasdataResult.studentnamn"> </td>-->
+      <td> {{this.currentCanvasdataResult.studentnamn}}</td>
+      <td> {{this.currentCanvasdataResult.omdome}}</td>
+      <td> <input [(ngModel)]="this.currentCanvasdataResult.resultat"></td>
+      <td> <input [(ngModel)]="this.currentCanvasdataResult.registrDatum"></td>
+      <td> <input [(ngModel)]="this.currentCanvasdataResult.status"></td>
+      <td ><input [(ngModel)]="this.currentCanvasdataResult.information"></td>-->
+
+    </tr>
+
+  </table>
 </div>
-
-<!--<div class="myBorder">
-<p>RADER MED OKLARHET </p>
-</div>-->
-
 </body>
 </html>

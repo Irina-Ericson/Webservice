@@ -206,3 +206,7 @@ a.list-group-item, .list-group-item-action {
   display: inline-block;
   width:500px;
 }
+.selected{
+    background:mediumseagreen!important;
+    color:white;
+}

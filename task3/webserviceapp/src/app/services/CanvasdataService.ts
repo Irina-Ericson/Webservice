@@ -1,12 +1,13 @@
 import {Canvasdata} from 'src/assets/models/Canvasdata';
 import {CanvasdataResult} from 'src/assets/models/CanvasdataResult';
 import {Injectable} from '@angular/core';
-import { HttpClient,HttpClientModule , HttpRequest, HttpEvent} from '@angular/common/http';
+import { HttpClient,HttpClientModule , HttpRequest, HttpEvent, HttpParams} from '@angular/common/http';
 
 import {environment} from 'src/environments/environment';
 import {Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule,Validators } from '@angular/forms';
+
 
 
 
@@ -38,6 +39,22 @@ public getCanvasdataByKurskod(kurskod:string): Observable<any>{
 
 public getCanvasdataResult(kursnamn:any): Observable<any>{
   return this.http.get(`${this.apiServerUrl}/canvasdata/canvasdataResult/${kursnamn}`);
+}
+
+/**public getCanvasdataResultByUppgift(kursnamn:any, uppgift:any): Observable<any>{
+  return this.http.get(`${this.apiServerUrl}/canvasdata/canvasdataResult_2/`);
+}**/
+
+public getCanvasdataResultByUppgift(): Observable<any>{
+    const url='http://localhost:8080/canvasdata/canvasdataResult_2';
+    let queryParams = new HttpParams()
+    .set("kursnamn",1)
+    .set("uppgift", 2);
+ //   queryParams = queryParams.append("kursnamn",1);
+//    queryParams = queryParams.append("uppgift",1);
+    //queryParams=queryParams.set("kursnamn", "uppgift");
+
+  return this.http.get<any>(url,{params:queryParams});
 }
 
 list(): Observable<any> {

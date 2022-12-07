@@ -33,21 +33,21 @@ public class CanvasService {
 
         return canvasRepo.findAllData();
     }
+    public List<CanvasResultProjection> findResultDataByUppgift(String kursnamn, String uppgift) {
+        return canvasRepo.findResultDataByUppgift(kursnamn, uppgift);
+    }
 
-    public List<CanvasResultProjection> findAllResultData(){
+   /** public List<CanvasResultProjection> findAllResultData(){
 
         return canvasRepo.findAllResultData();
-    }
+    }**/
 
     public List<CanvasResultProjection> findAllResultDataByKursnamn(String kursnamn){
 
         return canvasRepo.findAllResultDataByKursnamn(kursnamn);
     }
-
-
-
-
-
+    public List<Canvasdata> findAllCancasdata()
+    {return canvasRepo.findAll();}
 
 
 

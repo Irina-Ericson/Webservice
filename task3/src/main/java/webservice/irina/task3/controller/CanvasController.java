@@ -39,10 +39,10 @@ public class CanvasController {
         return canvasService.findAllData();
     }
 
-    @GetMapping("/canvasdataResult")
+ /**   @GetMapping("/canvasdataResult")
     List<CanvasResultProjection> getAllResultCanvasdataById(){
         return canvasService.findAllResultData();
-    }
+    }**/
 
     @PostMapping("/canvasdata")
     public Canvasdata createCanvasdata(@RequestBody Canvasdata cd) {
@@ -61,6 +61,12 @@ public class CanvasController {
         return canvasService.findAllResultDataByKursnamn(kursnamn);
     }
 
+    @GetMapping(path="/canvasdataResult_2")
+    @ResponseBody
+    List<CanvasResultProjection> findResultDataByUppgift (@RequestParam("kursnamn") String kursnamn, @RequestParam("uppgift") String uppgift) {
+
+        return canvasService.findResultDataByUppgift(kursnamn, uppgift);
+    }
     /** @GetMapping("/myCanvasdata_1/{studentID}")
     public List <Canvasdata> getStudentByStudentID (@PathVariable String studentID) {
 
@@ -86,7 +92,7 @@ public class CanvasController {
   /**  @PutMapping(value="/saveCanvasdata")
     @ResponseBody
     ResponseEntity<Canvasdata> saveCanvasdata(@PathVariable("c_id") Long c_id, @RequestBody Canvasdata cd) {
-        Optional<Canvasdata> canvasdatadataOptional = canvasRepo.findCanvasdataById(c_id);
+        Optional<Canvasdata> canvasdatadataOptional = canvasRepo.findCanvasdataByC_id(c_id);
 
         if (canvasdatadataOptional.isPresent()) {
             Canvasdata _cd = canvasdatadataOptional.get();

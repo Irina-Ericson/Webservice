@@ -200,5 +200,15 @@ public class Canvasdata implements Serializable {
         this.kommentar = kommentar;
     }
 
+   @Override
+    public String toString() {
+        return "Canvasdata{" +
 
-}
+                ", studentnamn='" + studentnamn + '\'' +
+                ", kursnamn='" + kursnamn + '\'' +
+                ", uppgift='" + uppgift + '\'' +
+                '}';
+
+    }
+
+    }

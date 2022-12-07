@@ -23,11 +23,11 @@ import java.util.Optional;
 public interface CanvasRepo extends JpaRepository<Canvasdata, Long> {
 
     @NotNull
-   //Optional<Canvasdata> findCanvasdataById(Long id);
+ //  Optional<Canvasdata> findCanvasdataByC_id(Long c_id);
 
   //  List<Canvasdata> getCanvasdataById(Long id);
 
-
+    List<CanvasResultProjection> findUppgiftByKursnamn(String kursnamn);
 
    // void deleteCanvasdataById(@NotNull Long id);
 
@@ -35,17 +35,21 @@ public interface CanvasRepo extends JpaRepository<Canvasdata, Long> {
     @Query(value="select c.*, s.* from canvasdata c, studentits s where c.studentid LIKE s.student_id", nativeQuery = true)
     List <CanvasProjection> findAllData();
 
-    @Query(value="select * from canvasdata c inner join studentits s on c.studentid=s.student_id inner join ladokdata l on s.personnummer=l.pnr group by uppgift", nativeQuery = true)
+   @Query(value="select * from canvasdata c inner join studentits s on c.studentid=s.student_id inner join ladokdata l on s.personnummer=l.pnr group by uppgift", nativeQuery = true)
     List <CanvasResultProjection> findAllResultData();
 
 
-    @Query(value="select * from canvasdata c inner join studentits s on c.studentid=s.student_id inner join ladokdata l on s.personnummer=l.pnr group by uppgift", nativeQuery = true)
+   @Query(value="select * from canvasdata c inner join studentits s on c.studentid=s.student_id inner join ladokdata l on s.personnummer=l.pnr group by uppgift", nativeQuery = true)
 
     List <CanvasResultProjection> findAllResultDataByKursnamn(String kursnamn);
 
+   @Query(value="select * from canvasdata c inner join studentits s on c.studentid LIKE s.student_id inner join ladokdata l on s.personnummer LIKE l.pnr where c.kursnamn=?1 and c.uppgift=?2 group by c.uppgift", nativeQuery = true)
+
+    List <CanvasResultProjection> findResultDataByUppgift(@Param("kursnamn")String kursnamn,@Param("uppgift")String uppgift);
     List <Canvasdata> findStudentByStudentID(String studentID);
 
     List <Canvasdata> findStudentByKurskod(String kurskod);
+
 
     @Query("SELECT u.studentnamn FROM Canvasdata u")
     List<Canvasdata[]> getJoinInformation();
