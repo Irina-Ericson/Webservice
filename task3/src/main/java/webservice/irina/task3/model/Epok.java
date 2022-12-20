@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Entity
 public class Epok implements Serializable {
     @Id
-    @Column(name="id", nullable=false)
+    @Column(name="ide", nullable=false)
     @GeneratedValue(strategy = GenerationType.AUTO)
 
     private Long id;

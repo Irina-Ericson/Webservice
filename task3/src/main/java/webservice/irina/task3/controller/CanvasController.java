@@ -4,6 +4,7 @@ package webservice.irina.task3.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,8 @@ import webservice.irina.task3.repo.CanvasRepo;
 import webservice.irina.task3.service.CanvasService;
 
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/canvasdata")
@@ -87,6 +88,17 @@ public class CanvasController {
         return student;
     }
 
+    @PutMapping(value="/updateCanvasResult/{id}/{registrDatum}/{status}/{information}/{resultat}")
+    @ResponseBody
+    public void updateResult(@PathVariable Long id, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date registrDatum,
+                                                              @PathVariable String status, @PathVariable String information,
+                                                              @PathVariable String resultat){
+       //List<CanvasResultProjection> cdOptional=canvasRepo.updateResult(resultat,registrDatum,status, information, id);
+
+
+        canvasRepo.updateResult(id,registrDatum,status, information, resultat);
+
+    }
 
 
   /**  @PutMapping(value="/saveCanvasdata")
@@ -113,7 +125,6 @@ public class CanvasController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }**/
-
 
 
 

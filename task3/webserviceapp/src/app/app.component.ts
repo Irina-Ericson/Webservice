@@ -7,6 +7,7 @@ import {Data, Router} from "@angular/router";
 import {HttpClient, HttpClientModule, HttpErrorResponse} from "@angular/common/http";
 import {KursService} from 'src/app/services/KursService';
 import {CanvasdataService} from 'src/app/services/CanvasdataService';
+import {LadokdataService} from 'src/app/services/LadokdataService';
 import {StudentItsService} from 'src/app/services/StudentItsService';
 import {Kurs} from 'src/assets/models/Kurs';
 import {Canvasdata} from 'src/assets/models/Canvasdata';
@@ -33,13 +34,14 @@ export class AppComponent implements OnInit {
 dataSource: any = new MatTableDataSource<CanvasdataResult>();
 
 message="Hej"
+uppgifter=["0005 Inlämningsuppgifter", "0001 Tentamen"];
 
 
-//kurser!: Kurs[];
+kurser!: Kurs[];
 canvasdatan!:Canvasdata[];
 studentsIts!:StudentIts[];
-canvasdataResults:CanvasdataResult[]=[];
-//currentKurs!:Kurs;
+canvasdataResults!:CanvasdataResult[];
+currentKurs!:Kurs;
 currentCanvasdata!:Canvasdata;
 currentStudentIts!:StudentIts;
 currentCanvasdataResult!:CanvasdataResult;
@@ -48,16 +50,17 @@ inputfile="";
 kursnamn="";
 uppgift="";
 
-/**kurs ={
+kurs ={
   id: "",
   kurskod: "",
   modul: "",
 
-};**/
+};
 
 
   canvasdataResult={
-
+    c_id:"",
+    id:"",
     status:"",
     omdome:"",
     studentnamn:"",
@@ -83,6 +86,22 @@ uppgift="";
   epostadress:""
     };
 
+   ladokdata={
+   id:"",
+   studentnamn:"",
+   antagningsar:"",
+   personnummer:"",
+   kursnummer:"",
+   kursar:"",
+   resultat:this.canvasdataResult.resultat,
+   intyg:"",
+   campus:"",
+   registrDatum:this.canvasdataResult.registrDatum,
+   information:this.canvasdataResult.information,
+   kursmodul:"",
+   status:this.canvasdataResult.status
+};
+
 retrieveResponse: any;
 
   isTableLoaded: boolean = false;
@@ -90,6 +109,8 @@ retrieveResponse: any;
   kurskod="";
   studentID="";
 
+    loading = false;
+    errorMessage = '';
 
 
 
@@ -99,7 +120,8 @@ constructor(private kursService: KursService,
               private router: Router,
               private dialog: MatDialog,
               private httpClient: HttpClient,
-              private dialogRef: MatDialog) {
+              private dialogRef: MatDialog,
+              private ladokdataService: LadokdataService) {
   }
 
   setTableIsLoaded() {
@@ -108,6 +130,7 @@ constructor(private kursService: KursService,
 
 
   ngOnInit(): void {
+
 
       this.dataSource = new MatTableDataSource<CanvasdataResult>();
      // this.dataSource = new MatTableDataSource(this.canvasdataResult);// create new object
@@ -118,43 +141,40 @@ constructor(private kursService: KursService,
     console.log(this.dataSource);**/
 
   }
-  onSelect(canvasdataResult: CanvasdataResult): void {
+  /**onSelect(kurs: Kurs): void {
+          this.currentKurs = kurs;
+          console.log(`currentKurs=${JSON.stringify(this.currentKurs)}`);
+
+
+      }**/
+
+onSelect(canvasdataResult: CanvasdataResult): void {
           this.currentCanvasdataResult = canvasdataResult;
-          //console.log(`currentCanvasdataResult=${JSON.stringify(this.currentCanvasdataResult)}`);
+          console.log(`currentKurs=${JSON.stringify(this.currentCanvasdataResult)}`);
 
 
       }
 
   getKursByKurskod(){
-        this.canvasdataService.getCanvasdataResult(this.kursnamn)
+        this.canvasdataService.getCanvasdataResult(this.kurskod)
           .subscribe(
             data=>
             this.canvasdataResults = data);
-            console.log("ok");
+            console.log("fine");
 
       }
 
-  /**getStudentByUppgift(){
-        this.canvasdataService.getCanvasdataResultByUppgift(this.uppgift)
-          .subscribe(
-            canvasdataResults_1=>
-            this.canvasdataResults_1 = canvasdataResults_1);
-            console.log("ok");
+   findKursByKurskod(){
+     this.canvasdataService.getCanvasdataResultByUppgift(this.kursnamn, this.uppgift)
+      .subscribe((response)=>{this.canvasdataResults=response;},
+        (error) => {this.errorMessage = error.message; this.loading = false;
+                               },
+                               () => {this.loading = false;})
 
-      }
-**/
-  getStudentByUppgift(): void {
-    this.canvasdataService.getCanvasdataResultByUppgift()
-      .subscribe(
-        data => {
-          this.canvasdataResults = data;
-          console.log(data);
-          console.log("bra");
-        },
-        error => {
-          console.log(error);
-        });
-  }
+           }
+
+
+
 
 
 
@@ -166,22 +186,6 @@ constructor(private kursService: KursService,
 
 
       }
-
-    //studentId="irieri-9";
-
-    /** findPnrByStudentId(){
-        this.studentItsService.findPnrByStudentID(this.http.canvasdata.studentID)
-                  .subscribe(
-                    studentsIts=>
-                    this.studentsIts = studentsIts);
-
-    }**/
-
-
-     /** setActiveKurs(kurs: Kurs,index: number):void{
-          this.currentKurs=kurs;
-          this.currentIndex=index;
-        }**/
 
       setActiveCanvasdata(canvasdata: Canvasdata,index: number):void{
           this.currentCanvasdata=canvasdata;
@@ -208,14 +212,30 @@ constructor(private kursService: KursService,
             this.currentIndex=index;
           }**/
 
+  updateResultat(): void{
+
+        this.message = '';
+        this.ladokdataService.updateLadokdata(this.ladokdata.id, this.ladokdata)
+          .subscribe({
+
+          next: (res) => {
+            console.log(res);
+            this.message = res.message ? res.message : 'Resultat är nu uppdaterat!';
+          },
+          error: (e) => console.error(e)
+        });
+    }
+
+
   onSubmit() {
 
   //  this.findCanvasdataByKurskod();
-    this.getKursByKurskod();
-    this.getStudentByUppgift();
+  // this.getKursByKurskod();
+
+   // this.getStudentByUppgift();
 
 
- //   this.findPnrByStudentId();
+  this.findKursByKurskod();
 
 
   }

@@ -8,39 +8,26 @@
     </div>
     <form (ngSubmit)="onSubmit()" class="searchform">
       <div class="form-group">
-
         <input type="text" class="form-control" id="course-code" [(ngModel)]="kursnamn" name="course-code" >
-        <!--  <input class="form-control" type="course-code" id="course-code" [(ngModel)]= "kurskod">-->
-        <div class="box_button"  >
-          <button class="search-button" mat-flat-button color="accent" click="getKursByKurskod()" >sök</button>
-        </div>
       </div>
-    </form>
+    <!--<div class="box_button"  >
+      <button class="search-button" mat-flat-button color="accent" click="findKursByKurskod()" >sök</button>
+    </div>-->
+   </form>
   </div>
 
   <div class="list-group-item" >
+    <div class="box">
     <label >Uppgift i Canvas</label>
-
-
-    <div class="form-group">
-
-      <!--<input type="text" class="form-control" id="course-code1" [(ngModel)]="uppgift" name="course-code" >-->
-      <!-- <input class="form-control" type="course-code1" id="course-code1" [(ngModel)]= "uppgift">-->
-
-
+      </div>
+      <form (ngSubmit)="onSubmit()" class="searchform">
+       <div class="form-group">
+      <input type="text" class="form-control"  size="20" id="course-task" [(ngModel)]="uppgift" name="course-task" >
     </div>
-
-    <ol class="list-group">
-      <li
-        class="list-group-item"
-        *ngFor ="let canvasdataResult of canvasdataResults"
-        [class.selected]="canvasdataResult === currentCanvasdataResult"
-        (click)="onSelect(canvasdataResult)"
-      >
-        <td>{{this.canvasdataResult.uppgift}}</td>
-      </li>
-    </ol>
-
+    <div class="box_button"  >
+      <button class="search-button" mat-flat-button color="accent" click="findKursByKurskod()" >sök</button>
+    </div>
+      </form>
   </div>
   <div class="list-group-item" >
     <div class="box">
@@ -85,33 +72,33 @@
 
 
     <input  class="form-control" type="text" >
-    <button class="search-button" mat-flat-button color="accent">Överför</button>
+    <button class="search-button" mat-flat-button color="accent" (click)="updateResultat()">Överför</button>
 
 
   </div>
 
 
 </div>
-<div *ngIf ="currentCanvasdataResult">
+<div >
   <table class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg color_DeepSkyBlue">
 
     <tr >
       <th scope="col">Namn</th>
       <th scope="col">Omdöme i Canvas </th>
       <th scope="col">Betyg i Ladok</th>
-      <th scope="col">Examinationsdata</th>
+      <th scope="col">Examinationsdatum</th>
       <th scope="col">Status</th>
       <th scope="col">Information</th>
 
     </tr>
-    <tr >
-      <!--<td> <input [(ngModel)]="this.currentCanvasdataResult.studentnamn"> </td>-->
-      <td> {{this.currentCanvasdataResult.studentnamn}}</td>
-      <td> {{this.currentCanvasdataResult.omdome}}</td>
-      <td> <input [(ngModel)]="this.currentCanvasdataResult.resultat"></td>
-      <td> <input [(ngModel)]="this.currentCanvasdataResult.registrDatum"></td>
-      <td> <input [(ngModel)]="this.currentCanvasdataResult.status"></td>
-      <td ><input [(ngModel)]="this.currentCanvasdataResult.information"></td>-->
+    <tr *ngFor ="let canvasdataResult of canvasdataResults">
+
+      <td> {{this.canvasdataResult.studentnamn}}</td>
+      <td> {{this.canvasdataResult.omdome}}</td>
+      <td> <input [(ngModel)]="this.canvasdataResult.resultat"></td>
+      <td> <input [(ngModel)]="this.canvasdataResult.registrDatum "></td>
+      <td> <input [(ngModel)]="this.canvasdataResult.status"></td>
+      <td ><input [(ngModel)]="this.canvasdataResult.information"></td>
 
     </tr>
 

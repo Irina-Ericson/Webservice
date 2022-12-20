@@ -30,7 +30,7 @@ public class LadokController {
     private final Logger debugLogger = LoggerFactory.getLogger(this.getClass().getCanonicalName());
 
     @GetMapping("/ladokdata")
-    public List<Ladokdata> getAllLadokdataById(String id){
+    public List<Ladokdata> getAllLadokdataById(String id) {
         return ladokRepo.findAll();
     }
 
@@ -48,33 +48,36 @@ public class LadokController {
     }
 
     @GetMapping("/myLadokdata/{studentnamn}")
-    public List findPnrByStudentnamn (@PathVariable("studentnamn") String studentnamn) {
+    public List findPnrByStudentnamn(@PathVariable("studentnamn") String studentnamn) {
 
         List student = ladokRepo.findPnrByStudentnamn(studentnamn);
         return student;
     }
-    @PutMapping(value="/saveLadokdata")
+
+    @PutMapping("/saveLadokdata/{id}")
     @ResponseBody
-    ResponseEntity<Ladokdata> saveLadokdata(@PathVariable("id") Long id, @RequestBody Ladokdata ld) {
-        Optional<Ladokdata> ladokdataOptional = ladokRepo.findLadokdataById(id);
+    Ladokdata saveLadokdata(@PathVariable("id") Long id, @RequestBody Ladokdata ld) {
+        return ladokRepo.findLadokdataById(id)
+                .map(_ld -> {
 
-        if (ladokdataOptional.isPresent()) {
-            Ladokdata _ld = ladokdataOptional.get();
-            _ld.setStudentnamn(ld.getStudentnamn());
-            _ld.setAntagningsar(ld.getAntagningsar());
-            _ld.setPersonnummer(ld.getPersonnummer());
-            _ld.setKursnummer(ld.getKursnummer());
-            _ld.setKursar(ld.getKursar());
-            _ld.setResultat(ld.getResultat());
-            _ld.setIntyg(ld.getIntyg());
-            _ld.setCampus(ld.isCampus());
+                    _ld.setId(ld.getId());
+                    _ld.setStudentnamn(ld.getStudentnamn());
+                    _ld.setAntagningsar(ld.getAntagningsar());
+                    _ld.setPersonnummer(ld.getPersonnummer());
+                    _ld.setKursnummer(ld.getKursnummer());
+                    _ld.setKursar(ld.getKursar());
+                    _ld.setResultat(ld.getResultat());
+                    _ld.setIntyg(ld.getIntyg());
+                    _ld.setCampus(ld.isCampus());
+                    _ld.setRegistrDatum(ld.getRegistrDatum());
+                    _ld.setInformation(ld.getInformation());
+                    _ld.setKursmodul(ld.getKursmodul());
+                    return ladokRepo.save(_ld);
+                })
+                .orElseGet(() -> {
+                    return ladokRepo.save(ld);
 
-            return new ResponseEntity<>(ladokRepo.save(_ld), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+                });
 
     }
-
-    }
+}

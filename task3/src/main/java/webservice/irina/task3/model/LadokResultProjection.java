@@ -23,6 +23,10 @@ public interface LadokResultProjection {
     @Value("#{target.personnummer}")
     String getPersonnummer();
 
+    @Value("#{target.id}")
+    Long getId();
+
+
     List<CanvasResultProjection> getCanvasdata();
 
 

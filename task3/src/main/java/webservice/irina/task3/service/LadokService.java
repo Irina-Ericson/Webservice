@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import webservice.irina.task3.model.CanvasResultProjection;
 import webservice.irina.task3.model.Ladokdata;
 import webservice.irina.task3.repo.LadokRepo;
 
@@ -34,6 +35,10 @@ public class LadokService {
     public List<Ladokdata> getPersonnummer(Long personnummer) {
         return ladokRepo.getLadokdataById(personnummer);
     }
+
+    public Ladokdata updateResult(Ladokdata ladokdata)
+    {return ladokRepo.save(ladokdata);}
+
 
 
 }

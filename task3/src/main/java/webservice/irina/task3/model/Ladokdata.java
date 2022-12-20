@@ -1,8 +1,11 @@
 package webservice.irina.task3.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 
 @Entity
 public class Ladokdata implements Serializable {
@@ -51,6 +54,7 @@ public class Ladokdata implements Serializable {
 
     private String information;
 
+
     public Date getRegistrDatum() {
         return registrDatum;
     }
@@ -58,7 +62,8 @@ public class Ladokdata implements Serializable {
     public void setRegistrDatum(Date registrDatum) {
         this.registrDatum = registrDatum;
     }
-
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Temporal(TemporalType.DATE)
     private Date registrDatum;
 
     public Canvasdata getCanvasdata() {

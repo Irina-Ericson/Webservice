@@ -28,6 +28,8 @@ public interface CanvasResultProjection {
     //personnummer Ladok
     String getPersonnummer();
 
+    Long getId();
+
 
 
 

@@ -45,17 +45,19 @@ public getCanvasdataResult(kursnamn:any): Observable<any>{
   return this.http.get(`${this.apiServerUrl}/canvasdata/canvasdataResult_2/`);
 }**/
 
-public getCanvasdataResultByUppgift(): Observable<any>{
-    const url='http://localhost:8080/canvasdata/canvasdataResult_2';
-    let queryParams = new HttpParams()
-    .set("kursnamn",1)
-    .set("uppgift", 2);
- //   queryParams = queryParams.append("kursnamn",1);
-//    queryParams = queryParams.append("uppgift",1);
-    //queryParams=queryParams.set("kursnamn", "uppgift");
+public getCanvasdataResultByUppgift(kursnamn: string, uppgift: string): Observable<CanvasdataResult[]>{
+let params = new HttpParams()
+    .set('kursnamn', kursnamn)
+    .set('uppgift', uppgift);
+    console.log(params.toString());
 
-  return this.http.get<any>(url,{params:queryParams});
+   return this.http.get<CanvasdataResult[]>(`${this.apiServerUrl}/canvasdata/canvasdataResult_2`, {params});
 }
+
+
+/**public getCanvasdataResultByUppgift(uppgift:string): Observable<any>{
+   return this.http.get<any>(`${this.apiServerUrl}/canvasdata/canvasdataResult_2/${uppgift}`);
+}**/
 
 list(): Observable<any> {
     return this.http.get(this.apiServerUrl);
