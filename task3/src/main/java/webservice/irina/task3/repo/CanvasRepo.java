@@ -9,9 +9,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import webservice.irina.task3.model.CanvasProjection;
 import webservice.irina.task3.model.CanvasResultProjection;
 import webservice.irina.task3.model.Canvasdata;
+import webservice.irina.task3.model.Ladokdata;
 
 
 import java.util.Date;
@@ -47,14 +49,10 @@ public interface CanvasRepo extends JpaRepository<Canvasdata, Long> {
 
    //@Query(value="select * from canvasdata c inner join studentits s on c.studentid LIKE s.student_id inner join ladokdata l on s.personnummer LIKE l.pnr where c.kursnamn=?1 and c.uppgift=?2 group by c.uppgift", nativeQuery = true)
    @Query(value="select * from canvasdata c inner join studentits s on c.studentid LIKE s.student_id inner join ladokdata l on " +
-           "s.personnummer LIKE l.pnr inner join epok e on e.kurs LIKE c.kursnamn where c.kursnamn=?1 and c.uppgift=?2 group by c.c_id", nativeQuery = true)
+           "s.personnummer LIKE l.pnr inner join epok e on e.kurs LIKE c.kursnamn where c.kursnamn=?1 and c.uppgift=?2 and c.uppgift=l.kursmodul group by l.id", nativeQuery = true)
 
     List <CanvasResultProjection> findResultDataByUppgift(@Param ("kursnamn") String kursnamn, @Param("uppgift")String uppgift);
 
-   @Transactional
-   @Modifying
-   @Query(value="update ladokdata l set l.resultat=?5, l.registr_datum=?2, l.status=?3, l.information=?4 where l.id=?1", nativeQuery = true)
-   void updateResult(Long id, @DateTimeFormat(pattern= "yyyy-MM-dd") Date registrDatum, String status, String information, String resultat);
     List <Canvasdata> findStudentByStudentID(String studentID);
 
     List <Canvasdata> findStudentByKurskod(String kurskod);

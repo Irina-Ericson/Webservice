@@ -4,20 +4,24 @@ package webservice.irina.task3.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import webservice.irina.task3.exception.ResourceNotFoundException;
 import webservice.irina.task3.model.CanvasProjection;
 import webservice.irina.task3.model.CanvasResultProjection;
 import webservice.irina.task3.model.Canvasdata;
+import webservice.irina.task3.model.Ladokdata;
 import webservice.irina.task3.repo.CanvasRepo;
+import webservice.irina.task3.repo.LadokRepo;
 import webservice.irina.task3.service.CanvasService;
 
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/canvasdata")
@@ -32,6 +36,7 @@ public class CanvasController {
 
     @Autowired
     public CanvasRepo canvasRepo;
+    public LadokRepo ladokRepo;
 
     private final Logger debugLogger = LoggerFactory.getLogger(this.getClass().getCanonicalName());
 
@@ -50,12 +55,12 @@ public class CanvasController {
         return canvasRepo.save(cd);
     }
 
-    @GetMapping("/canvasdata/{c_id}")
+ /**   @GetMapping("/canvasdata/{c_id}")
     public ResponseEntity<Canvasdata> getCanvasdataById(@PathVariable Long c_id) {
         Canvasdata cd = canvasRepo.findById(c_id)
                 .orElseThrow(() -> new ResourceNotFoundException("Canvasdata finns inte med id :" + c_id));
         return ResponseEntity.ok(cd);
-    }
+    }**/
 
     @GetMapping("/canvasdataResult/{kursnamn}")
     List<CanvasResultProjection> findAllResultDataByKursnamn (@PathVariable String kursnamn) {
@@ -88,44 +93,40 @@ public class CanvasController {
         return student;
     }
 
-    @PutMapping(value="/updateCanvasResult/{id}/{registrDatum}/{status}/{information}/{resultat}")
-    @ResponseBody
-    public void updateResult(@PathVariable Long id, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date registrDatum,
-                                                              @PathVariable String status, @PathVariable String information,
-                                                              @PathVariable String resultat){
-       //List<CanvasResultProjection> cdOptional=canvasRepo.updateResult(resultat,registrDatum,status, information, id);
+    @ControllerAdvice
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public class ControllerExceptionHandler {
 
-
-        canvasRepo.updateResult(id,registrDatum,status, information, resultat);
+        @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class})
+        @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+        @ResponseBody
+        public Map<String, String> handleServiceCallException(MethodArgumentTypeMismatchException e) {
+            Map<String, String> errMessages = new HashMap<>();
+            errMessages.put("error", "MethodArgumentTypeMismatchException");
+            errMessages.put("message", e.getMessage());
+            errMessages.put("parameter", e.getName());
+            errMessages.put("errorCode", e.getErrorCode());
+            return errMessages;
+        }
 
     }
 
 
-  /**  @PutMapping(value="/saveCanvasdata")
+   /** @PutMapping(value="/saveCanvasdata/{id}")
     @ResponseBody
-    ResponseEntity<Canvasdata> saveCanvasdata(@PathVariable("c_id") Long c_id, @RequestBody Canvasdata cd) {
-        Optional<Canvasdata> canvasdatadataOptional = canvasRepo.findCanvasdataByC_id(c_id);
+    public ResponseEntity<CanvasResultProjection> saveCanvasdata(@PathVariable("id") Long id, @RequestBody CanvasResultProjection crp) {
+        Optional<Ladokdata> ladokdata=ladokRepo.findById(id);
 
-        if (canvasdatadataOptional.isPresent()) {
-            Canvasdata _cd = canvasdatadataOptional.get();
-            _cd.setStudentID(cd.getStudentID());
-            _cd.setStudentnamn(cd.getStudentnamn());
-            _cd.setEpostadress(cd.getEpostadress());
-            _cd.setKursnamn(cd.getKursnamn());
-            _cd.setKurskod(cd.getKurskod());
-            _cd.setTermin(cd.getTermin());
-            _cd.setLasperiod(cd.getLasperiod());
-            _cd.setDokument(cd.getDokument());
-            _cd.setLank(cd.getLank());
-            _cd.setUppgift(cd.getUppgift());
-            _cd.setOmdome(cd.getOmdome());
-            _cd.setKommentar(cd.getKommentar());
-            return new ResponseEntity<>(canvasRepo.save(_cd), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
+
+            Ladokdata _crp =  ladokdata.get();
+            _crp.setResultat(crp.getResultat());
+            _crp.setRegistrDatum(crp.getRegistrDatum());
+            _crp.setStatus(crp.getStatus());
+            _crp.setInformation(crp.getInformation());
+
+            return new ResponseEntity<CanvasResultProjection>((CanvasResultProjection) ladokRepo.save(_crp), HttpStatus.OK);}
+
     }**/
-
-
 
 }

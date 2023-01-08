@@ -1,8 +1,9 @@
 <html>
 <head></head>
 <body>
-<div>
-  <div class="list-group-item">
+<div class="infoSection">
+
+  <div class="infobox">
     <div class="box">
       <label for="course-code">Kurskod</label>
     </div>
@@ -10,13 +11,13 @@
       <div class="form-group">
         <input type="text" class="form-control" id="course-code" [(ngModel)]="kursnamn" name="course-code" >
       </div>
-    <!--<div class="box_button"  >
-      <button class="search-button" mat-flat-button color="accent" click="findKursByKurskod()" >sök</button>
-    </div>-->
+      <div class="box_button"  >
+        <button class="myButton" mat-flat-button color="accent" click="getKursByKurskod()" >sök</button>
+      </div>
    </form>
   </div>
 
-  <div class="list-group-item" >
+  <div class="infobox" >
     <div class="box">
     <label >Uppgift i Canvas</label>
       </div>
@@ -25,19 +26,26 @@
       <input type="text" class="form-control"  size="20" id="course-task" [(ngModel)]="uppgift" name="course-task" >
     </div>
     <div class="box_button"  >
-      <button class="search-button" mat-flat-button color="accent" click="findKursByKurskod()" >sök</button>
+      <button class="myButton" mat-flat-button color="accent" click="findKursByKurskod()" >sök</button>
     </div>
       </form>
   </div>
-  <div class="list-group-item" >
+  <div class="infobox" >
     <div class="box">
       <label for="modul-in-ladok">Modul i Ladok</label>
     </div>
     <div class="box">
-      <input class="form-control" type="course-code" id="modul-in-ladok">
+      <table *ngFor ="let kurs of kurser; let i=index"
+      [class.selected]="kurs===currentKurs"
+      (click)="setCurrentKurs(kurs, i)"
+      (click)="onSelectKurs(kurs)">
+
+      <td type="text" id="modul-in-ladok">  {{this.kurs.modul}}</td>
+      </table>
     </div>
-  </div>
-  <div class="list-group-item-button">
+
+</div>
+  <!--<div class="list-group-item-button">
     <div class="box">
       <label for="course-code">Markera</label>
     </div>
@@ -56,8 +64,8 @@
         <button class="search-button" mat-flat-button color="accent">Inga</button>
       </button>
     </div>
-  </div>
-  <div class="list-group-item-button">
+  </div>-->
+  <!--<div class="list-group-item-button">
 
     <label for="course-code">Datum för markerade</label>
 
@@ -65,7 +73,7 @@
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <button class="search-button" mat-flat-button color="accent">Sätt datum</button>
+    <button class="search-button" mat-flat-button color="accent" >Sätt datum</button>
   </div>
   <div class="myBorder">
 
@@ -75,7 +83,7 @@
     <button class="search-button" mat-flat-button color="accent" (click)="updateResultat()">Överför</button>
 
 
-  </div>
+  </div>-->
 
 
 </div>
@@ -89,20 +97,94 @@
       <th scope="col">Examinationsdatum</th>
       <th scope="col">Status</th>
       <th scope="col">Information</th>
-
+      <th scope="col">Överför</th>
     </tr>
-    <tr *ngFor ="let canvasdataResult of canvasdataResults">
+    <tr *ngFor ="let canvasdataResult of canvasdataResults; let i=index"
+    [class.selected]="canvasdataResult===currentCanvasdataResult"
+        (click)="setCurrentCanvasdataResult(canvasdataResult, i)"
+        (click)="onSelect(canvasdataResult)">
+
 
       <td> {{this.canvasdataResult.studentnamn}}</td>
       <td> {{this.canvasdataResult.omdome}}</td>
       <td> <input [(ngModel)]="this.canvasdataResult.resultat"></td>
-      <td> <input [(ngModel)]="this.canvasdataResult.registrDatum "></td>
+      <td> <input type="date"  [ngModel]="this.canvasdataResult.registr_datum | date: 'yyyy-MM-dd'" > </td>
+
       <td> <input [(ngModel)]="this.canvasdataResult.status"></td>
       <td ><input [(ngModel)]="this.canvasdataResult.information"></td>
+      <td> <button (click)="updateResultat()">Överför</button></td>
 
     </tr>
-
   </table>
+  <p>{{this.message}}</p>
+
+  </div>
+<div *ngIf="currentCanvasdataResult">
+  <p>{{currentCanvasdataResult.studentnamn}}-{{currentCanvasdataResult.personnummer}}</p>
+
 </div>
+
+<!--<div  >
+  <div class="col-md-6  container_border" >
+    <div *ngIf="currentCanvasdataResult"
+    >
+        <h4><strong>Överföring</strong></h4>
+      <form>
+        <div class="form-group">
+          <label for="result">Betyg i Ladok</label>
+          <input
+            type="text"
+            class="form-control"
+            id="myId"
+            [(ngModel)]="this.currentCanvasdataResult.id"
+            name="myId"
+          />
+          <input
+            type="text"
+            class="form-control"
+            id="result"
+            [(ngModel)]="this.currentCanvasdataResult.resultat"
+            name="result"
+          />
+        </div>
+        <div class="form-group">
+          <label for="datum">Examinationsdatum</label>
+          <input
+            type="text"
+            class="form-control"
+            id="datum"
+            [(ngModel)]="this.currentCanvasdataResult.registrDatum"
+            name="datum"
+          />
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <input
+            type="text"
+            class="form-control"
+            id="status"
+            [(ngModel)]="this.currentCanvasdataResult.status"
+            name="status"
+          />
+        </div>
+        <div class="form-group">
+          <label for="info">Information</label>
+          <input
+            type="text"
+            class="form-control"
+            id="info"
+            [(ngModel)]="this.currentCanvasdataResult.information"
+            name="info"
+          />
+        </div>
+
+      </form>
+      <button type="submit" class="badge badge-success mb-2 btn1" (click)="updateResultat()" >
+        Överför
+      </button>
+
+    </div>
+  </div>
+</div>-->
 </body>
 </html>

@@ -1,9 +1,13 @@
 package webservice.irina.task3.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -12,6 +16,7 @@ public class Ladokdata implements Serializable {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
+    // @JsonFormat(shape=JsonFormat.Shape.STRING)
     private Long id;
 
 
@@ -55,16 +60,22 @@ public class Ladokdata implements Serializable {
     private String information;
 
 
-    public Date getRegistrDatum() {
-        return registrDatum;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+//    @Temporal(TemporalType.DATE)
+    private Date registr_datum;
+
+    public Date getRegistr_datum() {
+        return registr_datum;
     }
 
-    public void setRegistrDatum(Date registrDatum) {
-        this.registrDatum = registrDatum;
+    public void setRegistr_datum(String registr_datum) {
+        try {
+            this.registr_datum = new SimpleDateFormat("yyyy-MM-dd").parse(registr_datum);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Temporal(TemporalType.DATE)
-    private Date registrDatum;
 
     public Canvasdata getCanvasdata() {
         return canvasdata;
@@ -81,7 +92,7 @@ public class Ladokdata implements Serializable {
     }
 
     public Ladokdata(Long id, String studentnamn, Long antagningsar, String personnummer, String kursnummer,
-                     Long kursar, String resultat, byte[] intyg, boolean campus, Date registrDatum, String information, String kursmodul) {
+                     Long kursar, String resultat, byte[] intyg, boolean campus, Date registr_datum, String information, String kursmodul) {
         super();
         this.id = id;
         this.studentnamn = studentnamn;
@@ -92,7 +103,7 @@ public class Ladokdata implements Serializable {
         this.resultat=resultat;
         this.intyg=intyg;
         this.campus=campus;
-        this.registrDatum=registrDatum;
+        this.registr_datum=registr_datum;
         this.information=information;
         this.kursmodul=kursmodul;
 
@@ -173,5 +184,16 @@ public class Ladokdata implements Serializable {
         this.campus = campus;
     }
 
+  /**  @Override
+    public String toString() {
+        return "Ladokdata{" +
+                "id=" + id +
+                ", kursar='" + kursar + '\'' +
+                ", resultat='" + resultat + '\'' +
+                ", intyg='" + intyg + '\'' +
 
-}
+                '}';
+
+    }**/
+
+    }

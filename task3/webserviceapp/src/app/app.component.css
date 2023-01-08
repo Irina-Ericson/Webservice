@@ -177,6 +177,9 @@ a.list-group-item, .list-group-item-action {
     content: '';
 }
 
+.myButton {
+        background-color: #39C0ED;
+      }
 .box{
   position:relative;
   height:30px;
@@ -209,4 +212,19 @@ a.list-group-item, .list-group-item-action {
 .selected{
     background:mediumseagreen!important;
     color:white;
+}
+
+.infoSection{
+box-sizing: border-box;
+width:100%;
+margin: 3em 0;
+padding: 0 5%;}
+
+.infobox{
+position: relative;
+float: left;
+margin: 0;
+width: 33.3%;
+text-align: left;
+color: #222;
 }

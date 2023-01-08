@@ -1,14 +1,14 @@
 export interface CanvasdataResult{
-    c_id:number;
-    id: number;
-    status:string | null;
+    c_id:string;
+    id: string;
+    status:string;
     omdome:string;
     studentnamn:string | null;
-    personnummer:string | null;
-    resultat:string | null;
+    personnummer:string;
+    resultat:string;
     ladokdata:string;
-    information:string | null;
-    registrDatum:any | null;
+    information:string;
+    registr_datum:any|null;
     kursnamn:string;
     uppgift:string;
 

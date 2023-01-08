@@ -30,8 +30,8 @@ constructor (private http: HttpClient){}
     return this.http.get<Kurs>(`${this.apiServerUrl}/kurs/kurs/${id}`);           /**OK**/
   }
 
-public findKursByKurskod(kurskod:string): Observable<any>{
-  return this.http.get(`${this.apiServerUrl}/kurs/myKurs/${kurskod}`);
+public findKursByKurskod(kursnamn:string): Observable<any>{
+  return this.http.get(`${this.apiServerUrl}/kurs/myKurs/${kursnamn}`);
 }
 
 list(): Observable<any> {

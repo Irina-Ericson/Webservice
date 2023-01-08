@@ -19,16 +19,22 @@ public interface CanvasResultProjection {
     List<LadokResultProjection> getLadokdata();
     //Betyg Ladok
     String getResultat();
+    void setResultat();
     //Datum Ladok
-    Date getRegistrDatum();
+    Date getRegistr_datum();
+    void setRegistr_datum();
     //status Ladok
     String getStatus();
+    void setStatus();
     //Information Ladok
     String getInformation();
+    void setInformation();
     //personnummer Ladok
     String getPersonnummer();
+    void setPersonnummer();
 
-    Long getId();
+    String getId();
+    void setId();
 
 
 

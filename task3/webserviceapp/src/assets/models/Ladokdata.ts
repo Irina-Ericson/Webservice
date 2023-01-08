@@ -1,6 +1,6 @@
 export interface Ladokdata {
 
-        id:number;
+        id:string;
         studentnamn:string;
         antagningsar:string;
         personnummer: string;
@@ -9,7 +9,7 @@ export interface Ladokdata {
         resultat:string;
         intyg:string;
         campus:string;
-        registrDatum:Date;
+        registr_datum:any|null;
         information:string;
         kursmodul:string;
         status:string;

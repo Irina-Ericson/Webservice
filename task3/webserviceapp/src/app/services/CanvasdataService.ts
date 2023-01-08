@@ -16,6 +16,7 @@ import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule,Validators } f
   providedIn: 'root'})
 export class CanvasdataService{
 canvasdata!: Canvasdata[];
+canvasdataResult!: CanvasdataResult[];
 
 //private apiServerUrl=environment.apiBaseUrl;
 private apiServerUrl = environment.apiBaseUrl;
@@ -53,6 +54,13 @@ let params = new HttpParams()
 
    return this.http.get<CanvasdataResult[]>(`${this.apiServerUrl}/canvasdata/canvasdataResult_2`, {params});
 }
+
+
+
+
+/**public updatePicture(picture: PictureTest):Observable<PictureTest>{
+    return this.http.put<PictureTest>(`${this.apiServerUrl}/picture/update`, picture);
+    }**/
 
 
 /**public getCanvasdataResultByUppgift(uppgift:string): Observable<any>{

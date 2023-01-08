@@ -41,10 +41,7 @@ public class CanvasService {
         return canvasRepo.findResultDataByUppgift(kursnamn, uppgift);
     }
 
-   /** public List<CanvasResultProjection> findAllResultData(){
 
-        return canvasRepo.findAllResultData();
-    }**/
 
     public List<CanvasResultProjection> findAllResultDataByKursnamn(String kursnamn){
 

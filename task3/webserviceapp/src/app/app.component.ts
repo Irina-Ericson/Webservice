@@ -11,6 +11,7 @@ import {LadokdataService} from 'src/app/services/LadokdataService';
 import {StudentItsService} from 'src/app/services/StudentItsService';
 import {Kurs} from 'src/assets/models/Kurs';
 import {Canvasdata} from 'src/assets/models/Canvasdata';
+import {Ladokdata} from 'src/assets/models/Ladokdata';
 import {CanvasdataResult} from 'src/assets/models/CanvasdataResult';
 import {StudentIts} from 'src/assets/models/StudentIts';
 import { Observable } from 'rxjs';
@@ -31,16 +32,19 @@ import { MatInputModule } from '@angular/material/input';
 export class AppComponent implements OnInit {
   title = 'webserviceapp';
 
+showAlert = false;
 dataSource: any = new MatTableDataSource<CanvasdataResult>();
 
-message="Hej"
-uppgifter=["0005 Inlämningsuppgifter", "0001 Tentamen"];
+
+statuses=["Utkast", "Klarmarkerat", "Attesterat"];
 
 
 kurser!: Kurs[];
 canvasdatan!:Canvasdata[];
 studentsIts!:StudentIts[];
 canvasdataResults!:CanvasdataResult[];
+ladokdatan!:Ladokdata;
+
 currentKurs!:Kurs;
 currentCanvasdata!:Canvasdata;
 currentStudentIts!:StudentIts;
@@ -49,6 +53,15 @@ currentIndex=-1;
 inputfile="";
 kursnamn="";
 uppgift="";
+currentCanvasdataResultId="";
+message="";
+dateForMarked="";
+
+someDate = new Date(1639326601000).toLocaleString('en', {
+                                    month: 'long',
+                                    day: 'numeric',
+                                    year: 'numeric',
+                                  });;
 
 kurs ={
   id: "",
@@ -58,9 +71,11 @@ kurs ={
 };
 
 
-  canvasdataResult={
-    c_id:"",
-    id:"",
+
+
+ canvasdataResult={
+    c_id: "",
+    id:"" ,
     status:"",
     omdome:"",
     studentnamn:"",
@@ -68,12 +83,26 @@ kurs ={
     resultat:"",
     ladokdata:"",
     information:"",
-    registrDatum:Date.now(),
+    registr_datum: new Date,
     kursnamn:"",
     uppgift:""
 
  };
-
+ladokdata={
+        id:"",
+        studentnamn:"",
+        antagningsar:"",
+        personnummer: "",
+        kursnummer:"",
+        kursar:"",
+        resultat:"",
+        intyg:"",
+        campus:"",
+        registr_datum: new Date,
+        information:"",
+        kursmodul:"",
+        status:"",
+};
 
 
   studentIts={
@@ -86,21 +115,7 @@ kurs ={
   epostadress:""
     };
 
-   ladokdata={
-   id:"",
-   studentnamn:"",
-   antagningsar:"",
-   personnummer:"",
-   kursnummer:"",
-   kursar:"",
-   resultat:this.canvasdataResult.resultat,
-   intyg:"",
-   campus:"",
-   registrDatum:this.canvasdataResult.registrDatum,
-   information:this.canvasdataResult.information,
-   kursmodul:"",
-   status:this.canvasdataResult.status
-};
+
 
 retrieveResponse: any;
 
@@ -133,6 +148,7 @@ constructor(private kursService: KursService,
 
 
       this.dataSource = new MatTableDataSource<CanvasdataResult>();
+
      // this.dataSource = new MatTableDataSource(this.canvasdataResult);// create new object
 
 
@@ -141,26 +157,24 @@ constructor(private kursService: KursService,
     console.log(this.dataSource);**/
 
   }
-  /**onSelect(kurs: Kurs): void {
+  onSelectKurs(kurs: Kurs): void {
           this.currentKurs = kurs;
           console.log(`currentKurs=${JSON.stringify(this.currentKurs)}`);
 
 
-      }**/
+      }
 
 onSelect(canvasdataResult: CanvasdataResult): void {
           this.currentCanvasdataResult = canvasdataResult;
-          console.log(`currentKurs=${JSON.stringify(this.currentCanvasdataResult)}`);
+          //console.log(`currentKurs=${JSON.stringify(this.currentCanvasdataResult)}`);
 
 
       }
 
   getKursByKurskod(){
-        this.canvasdataService.getCanvasdataResult(this.kurskod)
-          .subscribe(
-            data=>
-            this.canvasdataResults = data);
-            console.log("fine");
+        this.kursService.findKursByKurskod(this.kursnamn)
+          .subscribe((myData)=>{this.kurser=myData;
+            console.log(this.kurser);})
 
       }
 
@@ -207,35 +221,59 @@ onSelect(canvasdataResult: CanvasdataResult): void {
       }
     }
 
-  /**setCurrentCanvasdataResult(canvasdataResult: CanvasdataResult, index: number):void{
+  setCurrentCanvasdataResult(canvasdataResult: CanvasdataResult, index: number):void{
             this.currentCanvasdataResult=canvasdataResult;
             this.currentIndex=index;
-          }**/
+          }
 
-  updateResultat(): void{
+setCurrentKurs(kurs: Kurs, index: number):void{
+            this.currentKurs=kurs;
+            this.currentIndex=index;
+          }
 
-        this.message = '';
-        this.ladokdataService.updateLadokdata(this.ladokdata.id, this.ladokdata)
-          .subscribe({
+  updateResultat_2()
+  {
 
-          next: (res) => {
-            console.log(res);
-            this.message = res.message ? res.message : 'Resultat är nu uppdaterat!';
-          },
-          error: (e) => console.error(e)
-        });
-    }
+            console.log("tjena");
+            console.log(this.currentCanvasdataResult.id);
+            let id=this.currentCanvasdataResult.id;
+            this.ladokdataService.updateLadokdata(id).subscribe((response) => {});
+            console.log("fine");
+  }
 
+ updateResultat() : void {
+        console.log("tjenis");
+        console.log(this.currentCanvasdataResult.id);
+        console.log(this.canvasdataResults);
+
+        console.log(this.currentCanvasdataResult);
+        this.ladokdataService.update(this.currentCanvasdataResult.id, this.currentCanvasdataResult.resultat, this.currentCanvasdataResult.registr_datum,
+        this.currentCanvasdataResult.status, this.currentCanvasdataResult.information, this.currentCanvasdataResult).subscribe({next:(myData)=>{
+              console.log(this.currentCanvasdataResult.registr_datum);
+
+              console.log(myData);
+              this.message = myData.message ? myData.message : 'Resultat är nu uppdaterat!';
+              console.log(this.message);
+              },
+              error: (e) => console.log(e)
+                    });
+     }
+
+  /**  updateResultat() {
+      this.canvasdataService.updateLadokdata(this.canvasdataResults, this.canvasdataResults.id).subscribe((response) => {});
+    }**/
 
   onSubmit() {
+  //console.log(this.canvasdataResult);
 
   //  this.findCanvasdataByKurskod();
-  // this.getKursByKurskod();
+  this.getKursByKurskod();
 
    // this.getStudentByUppgift();
 
 
-  this.findKursByKurskod();
+ this.findKursByKurskod();
+
 
 
   }
