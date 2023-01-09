@@ -8,7 +8,7 @@ public interface StudentItsProjection {
 
 
 
-    @Value("#{target.studentid}")
+    @Value("#{target.student_id}")
     String getStudentID();
     String getLosenord();
 

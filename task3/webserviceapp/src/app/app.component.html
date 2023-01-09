@@ -186,5 +186,30 @@
     </div>
   </div>
 </div>-->
+<div class="infobox_1">
+<div class="lowerleft" >
+  <div class="box">
+    <label >Ange StudentID</label>
+  </div>
+  <form (ngSubmit)="onSubmit()" class="searchform">
+    <div class="form-group">
+      <input type="text" class="form-control"  size="20" id="course-tas" [(ngModel)]="studentID" name="course-task" >
+    </div>
+    <div class="box_button"  >
+      <button class="myButton" mat-flat-button color="accent" click="getPnr()" >sök pnr</button>
+    </div>
+  </form>
+
+</div>
+  <form>
+<div class="lowercenter" >
+  <table *ngFor ="let student of studentsIts;">
+    <td> {{this.student.studentnamn}} -- {{this.student.personnummer}}</td>
+
+   </table>
+
+</div>
+  </form>
+</div>
 </body>
 </html>

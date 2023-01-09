@@ -56,6 +56,7 @@ uppgift="";
 currentCanvasdataResultId="";
 message="";
 dateForMarked="";
+personnummer="";
 
 someDate = new Date(1639326601000).toLocaleString('en', {
                                     month: 'long',
@@ -187,9 +188,12 @@ onSelect(canvasdataResult: CanvasdataResult): void {
 
            }
 
+    getPnr(){
+          this.studentItsService.findPnrByStudentID(this.studentID)
+            .subscribe((response)=>{this.studentsIts=response;
+              console.log(response);})
 
-
-
+        }
 
 
     findCanvasdataByKurskod(){
@@ -197,8 +201,6 @@ onSelect(canvasdataResult: CanvasdataResult): void {
           .subscribe(
             canvasdatan=>
             this.canvasdatan = canvasdatan);
-
-
       }
 
       setActiveCanvasdata(canvasdata: Canvasdata,index: number):void{
@@ -267,12 +269,13 @@ setCurrentKurs(kurs: Kurs, index: number):void{
   //console.log(this.canvasdataResult);
 
   //  this.findCanvasdataByKurskod();
-  this.getKursByKurskod();
+ this.getKursByKurskod();
 
    // this.getStudentByUppgift();
 
 
  this.findKursByKurskod();
+ this.getPnr();
 
 
 

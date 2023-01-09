@@ -40,7 +40,7 @@ public class StudentITScontroller {
         return studentITSrepo.save(st);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{s_id}")
     public ResponseEntity<StudentIts> getAllStudents(@PathVariable Long id) {
         StudentIts st = (StudentIts) studentITSrepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Student finns inte med id :" + id));
